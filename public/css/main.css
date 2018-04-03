@@ -40,7 +40,6 @@ menu {
 	flex-wrap : nowrap;
 	justify-content : space-around;
 	padding : 0px 0px;
-
 }
 
 menu ul {
@@ -50,7 +49,11 @@ menu ul {
 
 menu ul li {
 	display : inline-block;
+	text-align : center;
 	width : 20%;	
+}
+menu ul li:hover{
+	background : #AAFFAA;
 }
 
 main {
