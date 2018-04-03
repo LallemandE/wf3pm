@@ -8,10 +8,23 @@
         {% endblock %}
     </head>
     <body>
-    	{% include 'header.html.twig' %}
-	  	{% include 'menuBar.html.twig' %}
-        {% block body %}{% endblock %}
-        {% include 'footer.html.twig' %}
-        {% block javascripts %}{% endblock %}
+    	<div class="centralFrame">
+    		{% block header %}
+        	    {% include 'header.html.twig' %}
+        	{% endblock %}
+        	
+        	{%  block menuBar %}    
+    	  	    {% include 'menuBar.html.twig' %}
+    	  	{% endblock %}    
+            
+    	  	{% block body %}{% endblock %}
+            
+            {%  block footer %}
+                {% include 'footer.html.twig' %}
+            {% endblock %}    
+            
+            {% block javascripts %}
+            {% endblock %}
+        </div>
     </body>
 </html>

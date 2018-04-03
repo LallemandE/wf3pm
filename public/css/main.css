@@ -1,11 +1,12 @@
-html{
+
+body {
 	background : #D0D0D0;
 }
 
-body{
+.centralFrame{
 	background : white;
-	width : 90%;
-	margin : 20px auto;
+	width : 80%;
+	margin : 20px auto 0px;
 	padding : 10px 0px;
 }
 
@@ -13,6 +14,7 @@ body h1 {
 	text-align : center;
 }
 header{
+	width : 100%;
 	display : flex;
 	flex-direction : row;
 	justify-content : space-between;
@@ -31,12 +33,13 @@ footer{
 }
 
 menu {
-	width : 92%;
+	width : 100%;
 	background : #A0A0A0;
 	display : flex;
 	flex-direction : row;
 	flex-wrap : nowrap;
 	justify-content : space-around;
+	padding : 0px 0px;
 
 }
 
@@ -47,6 +50,9 @@ menu ul {
 
 menu ul li {
 	display : inline-block;
-	width : 20%;
-	
+	width : 20%;	
+}
+
+main {
+	margin : 0px 20px;
 }
