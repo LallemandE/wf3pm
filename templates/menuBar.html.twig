@@ -1,8 +1,16 @@
 <menu>
 	<ul>
 		<li>HOME</li>
-		<li>Projects</li>
+		<li><a href="/add/product">PROJECT</a></li>
 		<li>Login</li>
 		<li>Register</li>
 	</ul>
 </menu>
+{% set infoMessages = app.flashes('info') %}
+{% if infoMessages is not empty %}
+<div> 
+{% for message in app.flashes('info') %}
+	<p>{{ message }} </p>
+{% endfor%}
+</div>
+{% endif %}

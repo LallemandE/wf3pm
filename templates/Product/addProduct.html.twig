@@ -1,7 +1,15 @@
 {% extends 'base.html.twig' %}
 {% block title %}Add a product{% endblock %}
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" type="text/css" href="/css/form.css">
+{% endblock %}
 
 {% block body %}
-<h1>Create a new product</h1>
-    {{ form(formular) }}
+	<h1>Create a new product</h1>
+	{{ form(formular) }}
+	
+	{# Ci-dessous, c'est la manière d'ajouter une classe à l'affichage 
+	{{ form(formular, {'attr': {'class': 'hello'}}) }}
+    #}
 {% endblock %}
