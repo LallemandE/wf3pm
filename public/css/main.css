@@ -6,8 +6,9 @@ body {
 .centralFrame{
 	background : white;
 	width : 80%;
+	min-width : 300px;
 	margin : 20px auto 0px;
-	padding : 10px 0px;
+	padding : 10px 0px 0px;
 }
 
 body h1 {
@@ -21,16 +22,17 @@ header{
 	padding = 10px 20px;
 }
 
+#logo{
+	padding : 10px 10px;
+}
+
 header h1, header p {
 	text-align : left;
 }
-
-footer{
-	background : black;
-	color : white;
-	text-align : center;
-	font-weight : 700;
+header p{
+	padding-right : 10px;
 }
+
 
 menu {
 	width : 100%;
@@ -58,4 +60,15 @@ menu ul li:hover{
 
 main {
 	margin : 0px 20px;
+}
+
+footer{
+	background : black;
+	color : white;
+	text-align : center;
+	font-weight : 700;
+}
+
+footer p{
+	margin : 0px 0px;
 }
