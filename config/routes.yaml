@@ -10,3 +10,7 @@ add_product :
     path : /add/product
     controller : App\Controller\ProductController::addProduct
     
+register :
+    path : /register
+    controller : App\Controller\UserController::register    
+    
