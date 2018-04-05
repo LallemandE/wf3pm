@@ -13,11 +13,11 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Doctrine\DBAL\Types\BooleanType;
 use App\Entity\User;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class UserController
 {
@@ -26,7 +26,9 @@ class UserController
         FormFactoryInterface $factory,
         Request $request,
         ObjectManager $manager,
-        SessionInterface $session
+        SessionInterface $session,
+        UrlGeneratorInterface $urlGenerator,
+        \Swift_Mailer $mailer
         )
     {
         $user = new User();
@@ -45,7 +47,7 @@ class UserController
                 ))
             ->add ('submit', SubmitType::class);
 
-
+        
         
         $form = $builder->getForm();
         
@@ -53,12 +55,25 @@ class UserController
         
         
         if ($form->isSubmitted() && $form->isValid()) {
-            $manager->persist($user);
-            $manager->flush();
+            // $manager->persist($user);
+            // $manager->flush();
+            
+            // I send the mail
+            // je crée le message
+            
+            $message = new \Swift_Message();
+            $message->setFrom('wf3pm@localhost.com')
+                ->setTo($user->getEmail())
+                ->setSubject('Validate your registration')
+                ->setBody($twig->render('mail/account_creation.html.twig',
+                                ['user' => $user]));
+            
+            $mailer->send($message);
+            
             
             $session->getFlashBag()->add ("info", "User Created");
             
-            return new RedirectResponse('/');
+            return new RedirectResponse($urlGenerator->generate('homepage'));
             
         }
         
@@ -66,5 +81,9 @@ class UserController
             ['formular' => $form->createView()]));
     }
     
+    public function  activateUser($token)
+    {
+        return new Response('Hello Eric ! your token is ' . $token);
+    }
 }
 

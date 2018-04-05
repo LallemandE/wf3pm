@@ -41,7 +41,7 @@ class ProductController
                     [   'required' => false,
                         'attr' => ['placeholder' => 'Enter Product description here (not compulsory) !',
                                 'rows' => 6,
-                                'cols' => 33]])
+                                'cols' => 90]])
                 ->add('version', TextType::class,
                     ['attr' => ['placeholder' => 'Enter version here !']])
                 ->add('submit', SubmitType::class);
@@ -57,7 +57,7 @@ class ProductController
             
             $session->getFlashBag()->add("info", "your product was created");
             
-            return new RedirectResponse('/');
+            return new RedirectResponse($urlGenerator->generate('homepage'));
             
         }
         

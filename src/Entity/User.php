@@ -11,6 +11,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 // pour taper la ligne précédent, on peut taper use NOTNULL puis autocomplétion et retirer la fin.
 
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Ramsey\Uuid\Uuid;
+
 
 
 
@@ -49,12 +51,14 @@ class User
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      * 
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $lastname;
 
@@ -76,9 +80,17 @@ class User
     /**
      * @ORM\Column(type="boolean")
      */
-    private $active = FALSE;
+    private $active = false;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $emailToken;
     
-    
+    public function __construct()
+    {
+        $this->setEmailToken(Uuid::uuid1());
+    }
 
     public function getId()
     {
@@ -157,6 +169,18 @@ class User
     {
         $this->active = $active;
         
+        return $this;
+    }
+
+    public function getEmailToken(): ?string
+    {
+        return $this->emailToken;
+    }
+
+    public function setEmailToken(?string $emailToken): self
+    {
+        $this->emailToken = $emailToken;
+
         return $this;
     }
 }

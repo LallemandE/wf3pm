@@ -12,12 +12,24 @@ form label {
 
 form input {
 	display : block;
-	margin : 15px auto 10px;
+	margin : 5px auto 10px;
 	width : 80%;
 	border-radius : 5px;
 	box-shadow : 2px 2px 2px green;
-	
+	transition-duration : 1s;
 }
+
+form input:hover{
+	/* transform : rotate(360deg); */
+}
+
+form textarea {
+	display : block;
+	margin : 5px auto 10px;
+	border-radius : 5px;
+	box-shadow : 2px 2px 2px green;
+}
+
 form button{
 	background : lightgreen;
 	display : block;

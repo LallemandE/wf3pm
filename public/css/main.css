@@ -14,6 +14,7 @@ body {
 body h1 {
 	text-align : center;
 }
+
 header{
 	width : 100%;
 	display : flex;
@@ -58,6 +59,10 @@ menu ul li {
 menu ul li a{
 	text-decoration : none;
 	color : black;
+}
+
+menu ul li .active{
+	color : red;
 }
 
 menu ul li:hover{

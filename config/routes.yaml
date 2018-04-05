@@ -14,3 +14,6 @@ register :
     path : /register
     controller : App\Controller\UserController::register    
     
+user_activate :
+    path : /user/activate/{token}
+    controller : App\Controller\UserController::activateUser   
