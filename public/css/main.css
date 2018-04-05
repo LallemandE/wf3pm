@@ -54,6 +54,12 @@ menu ul li {
 	text-align : center;
 	width : 20%;	
 }
+
+menu ul li a{
+	text-decoration : none;
+	color : black;
+}
+
 menu ul li:hover{
 	background : #AAFFAA;
 }

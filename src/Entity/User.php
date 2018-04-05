@@ -2,10 +2,30 @@
 
 namespace App\Entity;
 
+// POUR POUVOIR FAIRE DES CONTROLE D'UNICITE, J'AI BESOIN DES 3 USE SUIVANT
+
 use Doctrine\ORM\Mapping as ORM;
+
+// Pour pouvoir indiquer les contrôles à effectuer dans les commentaires devant les attributs
+use Symfony\Component\Validator\Constraints as Assert;
+// pour taper la ligne précédent, on peut taper use NOTNULL puis autocomplétion et retirer la fin.
+
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity(
+ *    fields={"username"},
+ *    errorPath="username",
+ *    message="This username is already in use !"
+ *    )
+ * @UniqueEntity(
+ *    fields={"email"},
+ *    errorPath="email",
+ *    message="This email is already in use !"
+ *    )   
  */
 class User
 {
@@ -18,11 +38,18 @@ class User
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *      min = 4,
+     *      max = 50,
+     *      minMessage = "Your first name must be at least {{ limit }} characters long",
+     *      maxMessage = "Your first name cannot be longer than {{ limit }} characters"
+     * )
      */
-    private $pseudo;
+    private $username;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * 
      */
     private $firstname;
 
@@ -31,24 +58,41 @@ class User
      */
     private $lastname;
 
+    
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\Email(
+     *     message = "The email '{{ value }}' is not a valid email.",
+     *     checkMX = true
+     * )
+     */
+    private $email;
+    
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $pwd;
+    private $password;
+    
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $active = FALSE;
+    
+    
 
     public function getId()
     {
         return $this->id;
     }
 
-    public function getPseudo(): ?string
+    public function getUsername(): ?string
     {
-        return $this->pseudo;
+        return $this->username;
     }
 
-    public function setPseudo(string $pseudo): self
+    public function setUsername(string $username): self
     {
-        $this->pseudo = $pseudo;
+        $this->username = $username;
 
         return $this;
     }
@@ -77,15 +121,42 @@ class User
         return $this;
     }
 
-    public function getPwd(): ?string
+    
+    public function getEmail(): ?string
     {
-        return $this->pwd;
+        return $this->email;
+    }
+    
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+        
+        return $this;
+    }
+    
+    
+    
+    public function getpassword(): ?string
+    {
+        return $this->password;
     }
 
-    public function setPwd(string $pwd): self
+    public function setpassword(string $password): self
     {
-        $this->pwd = $pwd;
+        $this->password = $password;
 
+        return $this;
+    }
+    
+    public function getActive(): bool
+    {
+        return $this->active;
+    }
+    
+    public function setActive(bool $active): self
+    {
+        $this->active = $active;
+        
         return $this;
     }
 }
