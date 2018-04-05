@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserController
 {
@@ -55,8 +56,8 @@ class UserController
         
         
         if ($form->isSubmitted() && $form->isValid()) {
-            // $manager->persist($user);
-            // $manager->flush();
+            $manager->persist($user);
+            $manager->flush();
             
             // I send the mail
             // je crée le message
@@ -81,9 +82,28 @@ class UserController
             ['formular' => $form->createView()]));
     }
     
-    public function  activateUser($token)
+    public function  activateUser($token,
+        ObjectManager $manager,
+        SessionInterface $session,
+        UrlGeneratorInterface $urlGenerator)
     {
-        return new Response('Hello Eric ! your token is ' . $token);
+        $userRepository = $manager->getRepository(User::class);
+        $user = $userRepository->findOneByEmailToken($token);
+        
+        
+        
+        if (! $user){
+            throw new NotFoundHttpException('User Activation / User not found !');
+        }
+        
+        $user->setActive(true)->setEmailToken(null);
+        $manager->flush();
+        
+        
+        $session->getFlashBag()->add ("info", "User validated !");
+        return new RedirectResponse($urlGenerator->generate('homepage'));
+        
+
     }
 }
 
