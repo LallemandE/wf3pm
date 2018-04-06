@@ -20,6 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use App\Repository\UserRepository;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class UserController
 {
@@ -113,13 +114,16 @@ class UserController
 
     }
     
-    public function usernameAvailable($username,
+    public function usernameExist(
                         Request $request,
                         UserRepository $repository)
     {
         $username = $request->request->get('username');
-        $unavailable = $repository->usernameExist($username);
         
+        $unavailable = false;
+        if (!empty($username)){
+            $unavailable = $repository->usernameExist($username);
+        }
         return new JsonResponse(['available' => ! $unavailable]);
     }
 }

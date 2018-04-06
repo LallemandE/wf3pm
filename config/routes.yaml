@@ -38,3 +38,9 @@ user_activate :
     requirements :
       token : '[a-z0-9-]+'
       _locale : 'en|fr'
+      
+      
+user_available :
+  path : /user/available
+  controller: App\Controller\UserController::usernameExist
+  methods: 'POST'      
