@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 
 /**
@@ -30,21 +31,23 @@ class ProductController
         FormFactoryInterface $factory,
         Request $request,
         ObjectManager $manager,
+        UrlGeneratorInterface $urlGenerator,
         SessionInterface $session)
     {
         $product = new Product();
         
         $builder = $factory->createBuilder(FormType::class, $product);
         $builder->add('name', TextType::class, 
-                        ['attr' => ['placeholder' => 'Enter Product name here !']])
+                        ['label' => 'FORM.PRODUCT.NAME.ITEM', 'attr' => ['placeholder' => 'FORM.PRODUCT.NAME.PLACEHOLDER']])
                 ->add('description', TextareaType::class,
-                    [   'required' => false,
-                        'attr' => ['placeholder' => 'Enter Product description here (not compulsory) !',
+                    ['label' => 'FORM.PRODUCT.DESCRIPTION.ITEM',
+                     'required' => false,
+                     'attr' => ['placeholder' => 'FORM.PRODUCT.DESCRIPTION.PLACEHOLDER',
                                 'rows' => 6,
                                 'cols' => 90]])
-                ->add('version', TextType::class,
-                    ['attr' => ['placeholder' => 'Enter version here !']])
-                ->add('submit', SubmitType::class);
+                 ->add('version', TextType::class,['label' => 'FORM.PRODUCT.VERSION.ITEM',
+                'attr' => ['placeholder' => 'FORM.PRODUCT.VERSION.PLACEHOLDER']])
+                    ->add('submit', SubmitType::class, ['label' => 'FORM.SUBMIT']);
         
         $form = $builder->getForm();
         
@@ -63,6 +66,27 @@ class ProductController
         
         return new Response($twig->render ('Product/addProduct.html.twig', 
                             ['formular' => $form->createView()]));
+    }
+    
+    public function list(
+                Environment $twig,
+                FormFactoryInterface $factory,
+                ObjectManager $manager,
+                UrlGeneratorInterface $urlGenerator,
+                SessionInterface $session
+               
+        ) 
+    {
+        
+        $productRepository = $manager->getRepository(Product::class);
+        $productArray = $productRepository->findAll();
+        
+        if ($productArray){
+            return new Response($twig->render('Product/listProduct.html.twig', ['productArray' => $productArray]));
+        }
+        $session->getFlashBag()->add("info", "No product registered");
+        return new RedirectResponse($urlGenerator->generate('homepage'));
+        
     }
 }
 

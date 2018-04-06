@@ -1,0 +1,33 @@
+HEADER:
+  HOME: ACCUEIL
+  PROJECT: PROJET
+  PROJECTLIST : LISTE PROJET
+  REGISTER: ENREGISTREMENT
+FOOTER:
+  COPYRIGHT: Copie r&eacute;serv&eacute;e
+HOME:
+  TITLE:
+    WONDERFULLSITE: Mon merveilleux site WEB
+REGISTER:
+  TITLE:
+  REGISTER: Enregistrez vous
+FORM:
+  SUBMIT: Envoyer
+  USER:
+    NAME: Pseudonyme
+    FIRSTNAME: Prénom
+    LASTNAME: Nom
+    EMAIL: Email
+    PASSWORD:
+      FIRST: Mot de passe
+      SECOND: A nouveau votre mot de passe
+  PRODUCT:
+    NAME:
+      ITEM: Produit
+      PLACEHOLDER: 'Entrez le nom du produit ici '
+    DESCRIPTION:
+      ITEM: Description
+      PLACEHOLDER: 'Entrez la description du produit (facultatif) '
+    VERSION:
+      ITEM: Version
+      PLACEHOLDER: 'Entrez le numéro de version ici '

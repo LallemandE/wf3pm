@@ -19,6 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use App\Repository\UserRepository;
 
 class UserController
 {
@@ -34,19 +35,19 @@ class UserController
     {
         $user = new User();
         $builder = $factory->createBuilder(FormType::class, $user);
-        $builder->add('username', TextType::class, ['required' => true])
-                ->add('firstname', TextType::class, ['required' => true])
-                ->add('lastname', TextType::class, ['required' => true])
-                ->add('email', EmailType::class, ['required' => true])
+        $builder->add('username', TextType::class, ['label' => 'FORM.USER.NAME', 'required' => true])
+        ->add('firstname', TextType::class, ['label' => 'FORM.USER.FIRSTNAME', 'required' => true])
+        ->add('lastname', TextType::class, ['label' => 'FORM.USER.LASTNAME','required' => true])
+        ->add('email', EmailType::class, ['label' => 'FORM.USER.EMAIL','required' => true])
                 ->add('password', RepeatedType::class,array(
                 'type' => PasswordType::class,
                 'invalid_message' => 'The password fields must match.',
                 'options' => array('attr' => array('class' => 'password-field')),
                 'required' => true,
-                'first_options'  => array('label' => 'Password'),
-                'second_options' => array('label' => 'Repeat Password'),
+                    'first_options'  => array('label' => 'FORM.USER.PASSWORD.FIRST'),
+                    'second_options' => array('label' => 'FORM.USER.PASSWORD.SECOND'),
                 ))
-            ->add ('submit', SubmitType::class);
+                ->add ('FORM.SUBMIT', SubmitType::class, ['label' => 'FORM.SUBMIT'] );
 
         
         
@@ -66,8 +67,14 @@ class UserController
             $message->setFrom('wf3pm@localhost.com')
                 ->setTo($user->getEmail())
                 ->setSubject('Validate your registration')
+                ->setContentType('text/html')
                 ->setBody($twig->render('mail/account_creation.html.twig',
-                                ['user' => $user]));
+                                ['user' => $user]))
+                ->addPart($twig->render('mail/account_creation.txt.twig',
+                                    ['user' => $user]), 'text/plain');
+
+                
+                
             
             $mailer->send($message);
             
@@ -104,6 +111,16 @@ class UserController
         return new RedirectResponse($urlGenerator->generate('homepage'));
         
 
+    }
+    
+    public function usernameAvailable($username,
+                        Request $request,
+                        UserRepository $repository)
+    {
+        $username = $request->request->get('username');
+        $unavailable = $repository->usernameExist($username);
+        
+        return new JsonResponse(['available' => ! $unavailable]);
     }
 }
 

@@ -1,0 +1,35 @@
+HEADER:
+  HOME: HOME
+  PROJECT: PROJECT
+  PROJECTLIST : PROJECT LIST
+  REGISTER: REGISTER
+FOOTER:
+  COPYRIGHT: Copyright
+HOME:
+  TITLE:
+    WONDERFULLSITE: My wonderfull website
+REGISTER:
+  TITLE:
+    REGISTER: REGISTER
+FORM:
+  SUBMIT: Submit
+  USER:
+    NAME: User name
+    FIRSTNAME: Firstname
+    LASTNAME: Lastname
+    EMAIL: Email
+    PASSWORD:
+      FIRST: Password
+      SECOND: Retype your password
+  PRODUCT:
+    NAME:
+      ITEM: Product name
+      PLACEHOLDER: 'Enter Product name here '
+    DESCRIPTION:
+      ITEM: Description
+      PLACEHOLDER: 'Enter Product description here (not compulsory) '
+    VERSION:
+      ITEM: Version
+      PLACEHOLDER: 'Enter version here '
+        
+    

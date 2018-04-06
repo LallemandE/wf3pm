@@ -1,9 +1,10 @@
 <menu>
 	<ul>
-		<li><a href="{{path('homepage')}}" {% if 'homepage' in app.request.attributes.get( '_route' ) %} class="active"{% endif %}>HOME</a></li>
-		<li><a href="{{path('add_product')}}" {% if 'product' in app.request.attributes.get( '_route' ) %} class="active" {% endif %}>PROJECT</a></li>
+		<li><a href="{{path('homepage_translation')}}" {% if 'homepage' in app.request.attributes.get( '_route' ) %} class="active"{% endif %}>{{'HEADER.HOME' | trans}}</a></li>
+		<li><a href="{{path('add_product')}}" {% if 'add_product' in app.request.attributes.get( '_route' ) %} class="active" {% endif %}>{{'HEADER.PROJECT' | trans}}</a></li>
+		<li><a href="{{path('list_product')}}" {% if 'list_product' in app.request.attributes.get( '_route' ) %} class="active" {% endif %}>{{'HEADER.PROJECTLIST' | trans}}</a></li>
 		<li>Login</li>
-		<li><a href="{{path('register')}}" {% if 'register' in app.request.attributes.get( '_route' ) %} class="active" {% endif %}>REGISTER</a></li>
+		<li><a href="{{path('register')}}" {% if 'register' in app.request.attributes.get( '_route' ) %} class="active" {% endif %}>{{'HEADER.REGISTER' | trans}}</a></li>
 	</ul>
 </menu>
 {# 

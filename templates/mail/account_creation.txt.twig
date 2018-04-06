@@ -1,0 +1,5 @@
+Hi {{ user.getFirstname }} {{ user.getLastname }} !
+
+Please confirm your registration by clicking on following mail
+
+URL="{{absolute_url(path('user_activate', {'token' : user.getEmailToken()}))}}"
