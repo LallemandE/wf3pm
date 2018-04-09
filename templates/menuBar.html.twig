@@ -3,8 +3,12 @@
 		<li><a href="{{path('homepage_translation')}}" {% if 'homepage' in app.request.attributes.get( '_route' ) %} class="active"{% endif %}>{{'HEADER.HOME' | trans}}</a></li>
 		<li><a href="{{path('add_product')}}" {% if 'add_product' in app.request.attributes.get( '_route' ) %} class="active" {% endif %}>{{'HEADER.PROJECT' | trans}}</a></li>
 		<li><a href="{{path('list_product')}}" {% if 'list_product' in app.request.attributes.get( '_route' ) %} class="active" {% endif %}>{{'HEADER.PROJECTLIST' | trans}}</a></li>
-		<li><a href="{{path('login')}}">LOGIN</a></li>
-		<li><a href="{{path('register')}}" {% if 'register' in app.request.attributes.get( '_route' ) %} class="active" {% endif %}>{{'HEADER.REGISTER' | trans}}</a></li>
+		{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+			<li><a href="{{path('logout')}}">LOGOUT</a></li>
+		{% else %}
+			<li><a href="{{path('login')}}">LOGIN</a></li>
+			<li><a href="{{path('register')}}" {% if 'register' in app.request.attributes.get( '_route' ) %} class="active" {% endif %}>{{'HEADER.REGISTER' | trans}}</a></li>
+		{% endif %}
 	</ul>
 </menu>
 {# 
