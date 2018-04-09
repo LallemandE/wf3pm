@@ -51,7 +51,6 @@ class UserRepository extends ServiceEntityRepository
     
     public function usernameExist($username)
     {
-        var_dump($username);
         $queryBuilder = $this->createQueryBuilder('u');
         
         $queryBuilder->select('COUNT(u) as count')

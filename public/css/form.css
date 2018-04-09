@@ -41,3 +41,11 @@ form button{
 form ul li{
 	color : red;
 }
+
+.username-available {
+	color : green;
+}
+
+.username-unavailable{
+	color : red;
+}

@@ -43,4 +43,8 @@ user_activate :
 user_available :
   path : /user/available
   controller: App\Controller\UserController::usernameExist
-  methods: 'POST'      
+  methods: 'POST'
+       
+login: 
+  path: /login
+  controller: App\Controller\UserController::login
