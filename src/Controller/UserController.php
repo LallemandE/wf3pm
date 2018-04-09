@@ -111,7 +111,8 @@ class UserController
     public function  activateUser($token,
         ObjectManager $manager,
         SessionInterface $session,
-        UrlGeneratorInterface $urlGenerator)
+        UrlGeneratorInterface $urlGenerator,
+        RoleRepository $roleRepository)
     {
         $userRepository = $manager->getRepository(User::class);
         $user = $userRepository->findOneByEmailToken($token);
@@ -123,6 +124,10 @@ class UserController
         }
         
         $user->setActive(true)->setEmailToken(null);
+        
+        // ajout du rôle si la validation se fait
+        $user->addRole($roleRepository->findOneByLabel('ROLE_ACTIVE'));
+        
         $manager->flush();
         
         
