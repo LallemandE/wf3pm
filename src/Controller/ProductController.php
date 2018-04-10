@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use App\Repository\ProductRepository;
 
 
 /**
@@ -88,5 +89,30 @@ class ProductController
         return new RedirectResponse($urlGenerator->generate('homepage'));
         
     }
+    
+    public function singleDisplay(
+                Environment $twig,
+                Request $request,
+                ProductRepository $productRepository,
+                UrlGeneratorInterface $urlGenerator,
+                SessionInterface $session)
+    {
+        $id = $request->query->get('id');
+        if ($id){
+            $product = $productRepository->findOneById($id);
+            
+            if ($product){
+                return new Response($twig->render('Product/displayProduct.html.twig', ['product' => $product]));
+            }
+            
+            $session->getFlashBag()->add("info", "Product not found");
+            return new RedirectResponse($urlGenerator->generate('homepage'));
+            
+        }
+        
+        $session->getFlashBag()->add("info", "Product key required");
+        return new RedirectResponse($urlGenerator->generate('homepage'));
+        
+    } // singleDisplay Method
 }
 

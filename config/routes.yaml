@@ -24,7 +24,15 @@ list_product :
     defaults:
       _locale: 'en'
     requirements:
-      _locale: 'en|fr'      
+      _locale: 'en|fr'
+      
+display_product:
+    path: /{_locale}/display/product
+    controller : App\Controller\ProductController::singleDisplay
+    defaults:
+      _locale: 'en'
+    requirements:
+      _locale: 'en|fr'        
     
 register :
     path : /{_locale}/register

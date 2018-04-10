@@ -28,6 +28,11 @@
 		    {{ product.description }}
 		    </td>
 		</tr>
+		<tr>
+			<td>
+			<a href="{{ path('display_product') }}?id={{ product.id }}"><button>DETAIL</button></a>
+			</td>
+		</tr>
 	</table>
 	{% endfor %}
 	
