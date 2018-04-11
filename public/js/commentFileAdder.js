@@ -7,7 +7,7 @@ function addFileInput(){
 	// je cherche l'élément correspondant à #comment_files
 	
 	var prototype = $('#comment_files').data('prototype');
-	var count = $('#comment_files > .form-group').length;
+	var count = $('#comment_files > div').length;
 	
 
 	// je crée une nouvelle variable et je remplace le pattern __name__ par le nombre d'élément
@@ -15,16 +15,19 @@ function addFileInput(){
 	var newForm = prototype.replace(/__name__/g, count);
 	
 	
-	var group = $('.form-group', newForm);
+	var group = $('input', newForm).parent();
 	
 	// j'ajoute le group que je viens de construire au bloc
 	$('#comment_files').append(group);
 }
 
+// I create the new button
+
 var button = $('<button>Add file</button>');
 
 // Je n'utilise pas bootstrap => je n'ai pas besoin de ce code de Matthieu
 // button.addClass('btn btn-success');
+
 button.attr('type', 'button');
 button.on('click', addFileInput);
 

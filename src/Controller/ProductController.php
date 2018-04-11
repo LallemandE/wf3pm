@@ -18,6 +18,9 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use App\Repository\ProductRepository;
+use App\Entity\Comment;
+use Symfony\Component\Form\FormFactory;
+use App\Form\CommentType;
 
 
 /**
@@ -95,6 +98,7 @@ class ProductController
                 Request $request,
                 ProductRepository $productRepository,
                 UrlGeneratorInterface $urlGenerator,
+                FormFactoryInterface $formFactory,
                 SessionInterface $session)
     {
         $id = $request->query->get('id');
@@ -102,7 +106,13 @@ class ProductController
             $product = $productRepository->findOneById($id);
             
             if ($product){
-                return new Response($twig->render('Product/displayProduct.html.twig', ['product' => $product]));
+                
+                $comment = new Comment();
+                $form = $formFactory->create(
+                    CommentType::class,
+                    $comment,
+                    ['stateless' => true]);
+                return new Response($twig->render('Product/displayProduct.html.twig', ['product' => $product, 'form' => $form->createView()]));
             }
             
             $session->getFlashBag()->add("info", "Product not found");

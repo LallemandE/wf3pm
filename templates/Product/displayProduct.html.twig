@@ -16,5 +16,40 @@
 			<td>Version </td>
 			<td>v.{{ product.version }} </td>
 		<tr>
-	</table>	
+	</table>
+		{{ form(form) }}
+	
+	{% if product.getComments() is empty %}
+		<h2>No comment in relation with this product</h2>
+	{% else %}
+		<h2>Comments</h2>
+    	<div class="productComment">	
+    		<ul>
+    		{% for comment in product.getComments() %}
+    			<li>{{ comment.comment|nl2br }} from {{ comment.author.firstname }} {{ comment.author.lastname }}</li>
+    			
+    			{% if comment.getFiles() is not empty %}
+    				{% for file in comment.getFiles() %}
+    					{% if file.getMimeType() |slice(0,6) == 'image/' %}
+    						<img alt="{{ file.getName() }}" src="{{file.getFileUrl()}}" width="500" />
+    					{% else %}
+    						<a href="{{ file.getFileUrl() }}"><button>DOWNLOAD</button></a>
+    					{% endif %}
+    				{% endfor %}
+    			{% endif %}
+    			
+    		{% endfor %}
+    		</ul>
+    	</div>	
+	{% endif %}
+	
+	{{ form(form) }}
+	
+		
+{% endblock %}
+	
+{% block javascripts %}
+	{{ parent() }}
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script <script src="/js/commentFileAdder.js"></script>></script>
 {% endblock %}
