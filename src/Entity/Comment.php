@@ -76,6 +76,18 @@ class Comment
 
         return $this;
     }
+    
+    
+    public function setFiles(array $files)
+    {
+        $this->files = new ArrayCollection();
+        foreach ($files as $file){
+            $this->addFile($file);
+        }
+        return $this;
+    }
+    
+    
 
     /**
      * @return Collection|CommentFile[]

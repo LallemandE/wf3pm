@@ -19,8 +19,12 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use App\Repository\ProductRepository;
 use App\Entity\Comment;
+use App\Entity\CommentFile;
+
 use Symfony\Component\Form\FormFactory;
 use App\Form\CommentType;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Ramsey\Uuid\Uuid;
 
 
 /**
@@ -99,7 +103,8 @@ class ProductController
                 ProductRepository $productRepository,
                 UrlGeneratorInterface $urlGenerator,
                 FormFactoryInterface $formFactory,
-                SessionInterface $session)
+                SessionInterface $session,
+                TokenStorageInterface $tokenStorage)
     {
         $id = $request->query->get('id');
         if ($id){
@@ -112,6 +117,65 @@ class ProductController
                     CommentType::class,
                     $comment,
                     ['stateless' => true]);
+                
+                // pour le traitement du formulaire d'ajout d'un commentaire
+                
+                $form->handleRequest($request);
+                if ($form->isSubmitted() && $form->isValid()){
+                    
+                    // save the comment
+                    
+                    // convert FileDto to File (name, url, mimetype) ... et on veut stocker le fichier dans \upload
+                    // je crée un tableau vide dans lequel je vais mettre mes file comment dans le bon format (et pas en FileDto)
+                    $tmpCommentFile = [];
+                    
+                    foreach ($comment->getFiles() as $fileArray) {
+                        foreach ($fileArray as $file) {
+                            $name = sprintf(
+                                '%s.%s',
+                                Uuid::uuid1(),
+                                $file->getClientOriginalExtension()
+                                );
+                            
+                            $commentFile = new CommentFile();
+                            $commentFile->setComment($comment)
+                            ->setMimeType($file->getMimeType())
+                            ->setName($file->getClientOriginalName())
+                            ->setFileUrl('/upload/'.$name);
+                            
+                            $tmpCommentFile[] = $commentFile;
+                            
+                            $file->move(
+                                __DIR__.'/../../public/upload',
+                                $name
+                                );
+                        }
+                    }
+                    
+                    $token = $tokenStorage->getToken();
+                    if (!$token){
+                        throw new \Exception();
+                    }
+                    $user = $token->getUser();
+                    if (!$user){
+                        throw new \Exception();
+                    }
+                    /*
+                    var_dump($token);
+                    echo '<br> !!! USER !!! <br>';
+                    var_dump($user);
+                    */
+                    $comment->setFiles($tmpCommentFile)
+                    ->setAuthor($user)
+                    ->setProduct($product);
+
+                // A ce niveau, on n'a pas encore faire la mise en pase de données.
+                
+                    
+                    
+                    
+                }
+                
                 return new Response($twig->render('Product/displayProduct.html.twig', ['product' => $product, 'form' => $form->createView()]));
             }
             
