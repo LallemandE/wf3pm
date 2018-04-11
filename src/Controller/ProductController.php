@@ -104,7 +104,8 @@ class ProductController
                 UrlGeneratorInterface $urlGenerator,
                 FormFactoryInterface $formFactory,
                 SessionInterface $session,
-                TokenStorageInterface $tokenStorage)
+                TokenStorageInterface $tokenStorage,
+                ObjectManager $manager)
     {
         $id = $request->query->get('id');
         if ($id){
@@ -143,6 +144,9 @@ class ProductController
                             ->setName($file->getClientOriginalName())
                             ->setFileUrl('/upload/'.$name);
                             
+                            // je persiste chaque commentFile
+                            $manager->persist($commentFile);
+                            
                             $tmpCommentFile[] = $commentFile;
                             
                             $file->move(
@@ -168,8 +172,16 @@ class ProductController
                     $comment->setFiles($tmpCommentFile)
                     ->setAuthor($user)
                     ->setProduct($product);
+                    
+                    // je persiste le comment
+                    $manager->persist($comment);
+                    $manager->flush();
 
-                // A ce niveau, on n'a pas encore faire la mise en pase de données.
+                
+                    // pour éviter que l'on ne recharge la base avec de nouveau commentaire si on press F5 => c'est un GET => on ne fait plus de POST
+                    // On n'a pas besoin de préciser le ?id car on peut passer l'argument à l'urlGenerator et il le fait pour nous.
+                    
+                    return new RedirectResponse($urlGenerator->generate('display_product', ['id' => $product->getId()]));
                 
                     
                     

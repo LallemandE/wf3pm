@@ -59,4 +59,11 @@ login:
   
 logout:
   path: /logout
-    
+
+#    
+# la route suivante permet simplement de visualiser les pages d'erreurs qui seront générées en production si l'on connait le code retour 404 ou 403 par exemple
+#
+   
+_errors:
+    resource: '@TwigBundle/Resources/config/routing/errors.xml'
+    prefix:   /_error    
