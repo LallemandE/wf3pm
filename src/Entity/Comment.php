@@ -5,6 +5,8 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
@@ -31,6 +33,7 @@ class Comment
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\CommentFile", mappedBy="comment", orphanRemoval=true)
+     * @Assert\Valid()
      */
     private $files;
 
@@ -115,5 +118,23 @@ class Comment
         $this->product = $product;
 
         return $this;
+    }
+    
+    // l'assert suivant permet au Validator de savoir qu'il doit exécuter cette validation complémentaire (en plus de toutes celles qui sont dans les asserts 
+    // de chaque attribut (individuellement).
+    
+    /**
+     * @Assert\Callback()
+     */
+    
+    public function validateComment(ExecutionContextInterface $context){
+        if (empty($this->files) && empty($this->comment)){
+            
+            // dabord, on construit une violation, on indique à quel donnée du formulaire, elle doit être "attachée" et puis je l'ajoute.
+            
+            $context->buildViolation('This field cannot be empty if no files is selected !')
+                ->atPath('comment')
+                ->addViolation();
+        }
     }
 }

@@ -14,7 +14,7 @@ function addFileInput(){
 	// que j'ai déjà compté ci-dessus
 	var newForm = prototype.replace(/__name__/g, count);
 	
-	
+	// je récupère le parent de prototype car c'est un élément du même type que je dois ajouter.
 	var group = $('input', newForm).parent();
 	
 	// j'ajoute le group que je viens de construire au bloc

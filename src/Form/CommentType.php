@@ -21,7 +21,10 @@ class CommentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         // TODO Auto-generated method stub
-        $builder->add('comment', TextareaType::class)
+        $builder->add(  'comment',
+                        TextareaType::class,
+                        ['required' => false]
+                       )
             ->add(
                 'files',
                 CollectionType::class,
